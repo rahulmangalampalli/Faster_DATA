@@ -1,0 +1,26 @@
+input: "data"
+input_shape {
+  dim: 1
+  dim: 192
+  dim: 212
+  dim: 380
+}
+
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read"
+  type: "Convolution"
+  bottom: "data"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: true
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}

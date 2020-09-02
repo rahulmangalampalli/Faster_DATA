@@ -1,0 +1,299 @@
+input: "data"
+input_shape {
+  dim: 1
+  dim: 3
+  dim: 212
+  dim: 380
+}
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read"
+  type: "Convolution"
+  bottom: "data"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 24
+    pad: 4
+    kernel_size: 7
+    stride: 2
+    group: 3
+  }
+}
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced1"
+  type: "Slice"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/margin1"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced1"
+  slice_param {
+    axis: 2
+    slice_point: 1
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced2"
+  type: "Slice"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced1"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/margin2"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced2"
+  slice_param {
+    axis: 3
+    slice_point: 1
+  }
+}
+ 
+
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/pointwise_weights/read"
+  type: "Convolution"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/depthwise_weights/read/sliced2"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/pointwise_weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/bn"
+  type: "BatchNorm"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/pointwise_weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/bn"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.0010000000474974513
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/scale"
+  type: "Scale"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/bn"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/scale"
+  scale_param {
+    bias_term: true
+  }
+}
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/relu"
+  type: "ReLU"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/scale"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/relu"
+}
+
+layer {
+  name: "pool1_3x3_s2"
+  type: "Pooling"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_1a_7x7/weights/read/relu"
+  top: "pool1_3x3_s2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 1
+  }
+}
+
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read"
+  type: "Convolution"
+  bottom: "pool1_3x3_s2"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/bn"
+  type: "BatchNorm"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/bn"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.0010000000474974513
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/scale"
+  type: "Scale"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/bn"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/scale"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/relu"
+  type: "ReLU"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/scale"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/relu"
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read"
+  type: "Convolution"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2b_1x1/weights/read/relu"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+
+    num_output: 192
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+      std: 0.01
+    }
+  }
+}
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/bn"
+  type: "BatchNorm"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/bn"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.0010000000474974513
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/scale"
+  type: "Scale"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/bn"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/scale"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/relu"
+  type: "ReLU"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/scale"
+  top: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/relu"
+}
+layer {
+  name: "pool2_3x3_s2"
+  type: "Pooling"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Conv2d_2c_3x3/weights/read/relu"
+  top: "pool2_3x3_s2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 1
+  }
+}
+
+
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read"
+  type: "Convolution"
+  bottom: "pool2_3x3_s2"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: true
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/bn"
+  type: "BatchNorm"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/bn"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.0010000000474974513
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/scale"
+  type: "Scale"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/bn"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/scale"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/relu"
+  type: "ReLU"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/scale"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_0/Conv2d_0a_1x1/weights/read/relu"
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read"
+  type: "Convolution"
+  bottom: "pool2_3x3_s2"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: true
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/bn"
+  type: "BatchNorm"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/bn"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.0010000000474974513
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/scale"
+  type: "Scale"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/bn"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/scale"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/relu"
+  type: "ReLU"
+  bottom: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/scale"
+  top: "FirstStageFeatureExtractor/InceptionV2/Mixed_3b/Branch_1/Conv2d_0a_1x1/weights/read/relu"
+}
