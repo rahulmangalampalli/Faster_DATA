@@ -3,7 +3,7 @@ input_shape {
   dim: 1
   dim: 192
   dim: 212
-  dim: 96
+  dim: 380
 }
 
 
