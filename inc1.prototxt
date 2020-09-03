@@ -10,7 +10,7 @@ input_shape {
 layer {
   name: "inception_a1_pool"
   type: "Pooling"
-  bottom: "pool2_3x3_s2"
+  bottom: "data"
   top: "inception_a1_pool"
   pooling_param {
     pool: AVE
